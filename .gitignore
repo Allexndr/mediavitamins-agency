@@ -36,3 +36,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .vercel
+.blob-cache
+
+# Медиа каталога — не в git (13 MB+ WebP, сотни файлов)
+# Локально: npm run media:optimize | На проде: npm run blob:upload или tildacdn
+/public/media/
+/public/images/categories/
+/public/images/goals/archive/

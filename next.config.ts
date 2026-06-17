@@ -25,6 +25,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "static.tildacdn.pro" },
+      { protocol: "https", hostname: "thb.tildacdn.pro" },
+      { protocol: "https", hostname: "static.tildacdn.com" },
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+      { protocol: "https", hostname: "*.blob.vercel-storage.com" },
     ],
   },
   async headers() {

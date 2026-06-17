@@ -8,9 +8,10 @@ import { SITE } from "@/shared/config/site";
 
 const NAV = [
   { href: "/catalog", label: "Каталог" },
-  { href: "/catalog?cat=vitamins", label: "Витамины" },
-  { href: "/catalog?cat=cosmetics", label: "Косметика" },
-  { href: "/catalog?cat=sets", label: "Наборы" },
+  { href: "/catalog?cat=vitaminy", label: "Витамины" },
+  { href: "/catalog?cat=uhodovaya-kosmetika", label: "Косметика" },
+  { href: "/catalog?cat=detskie-vitaminy", label: "Детям" },
+  { href: "/catalog?cat=collagen", label: "Коллагены" },
   { href: "/catalog?promo=1", label: "Акции" },
 ];
 

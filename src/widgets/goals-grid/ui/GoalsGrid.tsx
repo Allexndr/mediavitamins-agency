@@ -30,7 +30,7 @@ export function GoalsGrid() {
                   alt={goal.title}
                   fill
                   loading={i < 4 ? "eager" : "lazy"}
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover object-[center_30%] transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 45vw, 280px"
                   quality={80}
                 />

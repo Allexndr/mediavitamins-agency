@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { formatPrice, PRODUCTS } from "@/entities/product";
+import { useEffect, useState } from "react";
+import { formatPrice, UPSELL_PRODUCTS } from "@/entities/product/client";
 import {
   calcGiftProgress,
   calcShippingProgress,
@@ -21,12 +21,30 @@ export default function CheckoutPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<"kaspi" | "callback">("callback");
+  const [kaspiAvailable, setKaspiAvailable] = useState(false);
+  const [kaspiIsStaticLink, setKaspiIsStaticLink] = useState(false);
   const cartTotal = total();
+
+  useEffect(() => {
+    fetch("/api/payments/kaspi/status")
+      .then((r) => r.json())
+      .then((data: { available?: boolean; isStaticLink?: boolean }) => {
+        if (data.available) {
+          setKaspiAvailable(true);
+          setKaspiIsStaticLink(Boolean(data.isStaticLink));
+          setPaymentMethod("kaspi");
+        }
+      })
+      .catch(() => undefined);
+  }, []);
 
   const shipping = calcShippingProgress(cartTotal);
   const gift = calcGiftProgress(cartTotal);
 
-  const upsells = PRODUCTS.filter(
+  const upsells = UPSELL_PRODUCTS.filter(
     (p) => !items.some((i) => i.product.id === p.id),
   ).slice(0, 2);
 
@@ -40,16 +58,87 @@ export default function CheckoutPage() {
     return Object.keys(next).length === 0;
   };
 
+  const submitOrder = async () => {
+    setSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName: name,
+          customerPhone: phone,
+          total: cartTotal,
+          items: items.map(({ product, quantity }) => ({
+            productId: product.id,
+            slug: product.slug,
+            name: product.name,
+            price: product.price,
+            quantity,
+            image: product.image,
+          })),
+        }),
+      });
+
+      const data = (await res.json()) as { orderNumber?: string; error?: string };
+
+      if (!res.ok) {
+        throw new Error(data.error ?? "Ошибка оформления");
+      }
+
+      const orderNumber = data.orderNumber;
+      clearCart();
+
+      if (paymentMethod === "kaspi" && orderNumber) {
+        const payRes = await fetch("/api/payments/kaspi", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderNumber }),
+        });
+        const payData = (await payRes.json()) as {
+          paymentUrl?: string;
+          error?: string;
+          total?: number;
+        };
+
+        if (!payRes.ok) {
+          throw new Error(payData.error ?? "Не удалось открыть оплату Kaspi");
+        }
+
+        if (payData.paymentUrl) {
+          const returnParams = new URLSearchParams({
+            order: orderNumber,
+            total: String(payData.total ?? cartTotal),
+          });
+          sessionStorage.setItem("mv_pending_order", orderNumber);
+          window.location.href = payData.paymentUrl;
+          return;
+        }
+      }
+
+      const params = new URLSearchParams();
+      if (orderNumber) params.set("order", orderNumber);
+      params.set("total", String(cartTotal));
+      params.set("mode", "callback");
+      router.push(`/checkout/success?${params.toString()}`);
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : "Не удалось оформить заказ");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const nextStep = () => {
     if (step === 2 && !validateStep2()) return;
 
     if (step < 3) {
       setStep(step + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      clearCart();
-      router.push("/checkout/success");
+      return;
     }
+
+    void submitOrder();
   };
 
   if (items.length === 0 && step === 1) {
@@ -257,54 +346,70 @@ export default function CheckoutPage() {
         {step === 3 && (
           <section key="step3" className="animate-fade-in">
             <h1 className="font-display text-2xl md:text-3xl mb-2">Оплата</h1>
-            <p className="text-on-surface-variant text-sm mb-8">Выберите способ оплаты</p>
+            <p className="text-on-surface-variant text-sm mb-8">
+              Сумма к оплате: <strong className="text-on-surface">{formatPrice(cartTotal)}</strong>
+            </p>
 
-            <div className="space-y-4">
+            <div className="space-y-3 mb-6">
               <button
                 type="button"
-                className="w-full flex items-center justify-between p-5 rounded-2xl bg-[#E62E2E] text-white font-bold active:scale-[0.98] transition-transform"
+                onClick={() => setPaymentMethod("kaspi")}
+                disabled={!kaspiAvailable}
+                className={`w-full flex items-center justify-between p-5 rounded-2xl font-bold transition-all text-left ${
+                  paymentMethod === "kaspi"
+                    ? "bg-[#E62E2E] text-white ring-2 ring-[#E62E2E] ring-offset-2"
+                    : "bg-[#E62E2E]/90 text-white opacity-60"
+                } ${!kaspiAvailable ? "opacity-40 cursor-not-allowed" : "active:scale-[0.98]"}`}
               >
                 <div className="flex items-center gap-3">
                   <div className="bg-white/20 p-2 rounded-lg">
                     <Icon name="qr_code_2" />
                   </div>
-                  <span>Оплатить через Kaspi.kz</span>
+                  <div>
+                    <span className="block">Оплатить сейчас в Kaspi</span>
+                    <span className="text-xs font-normal opacity-90">
+                      {kaspiAvailable
+                        ? kaspiIsStaticLink
+                          ? "Переход в Kaspi (сумму уточните в приложении)"
+                          : `Счёт на ${formatPrice(cartTotal)} в приложении Kaspi`
+                        : "Подключим после получения API от Kaspi"}
+                    </span>
+                  </div>
                 </div>
-                <Icon name="arrow_forward_ios" className="text-sm" />
+                {paymentMethod === "kaspi" && kaspiAvailable && (
+                  <Icon name="check_circle" filled />
+                )}
               </button>
 
-              <div className="flex items-center gap-4 py-4">
-                <div className="h-px bg-outline-variant/30 flex-grow" />
-                <span className="text-xs text-on-surface-variant font-bold uppercase">или картой</span>
-                <div className="h-px bg-outline-variant/30 flex-grow" />
-              </div>
-
-              <div className="p-6 rounded-2xl border-2 border-primary bg-white space-y-4">
-                <div className="relative">
-                  <Icon
-                    name="credit_card"
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Номер карты"
-                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-outline-variant outline-none focus:ring-2 focus:ring-primary/30"
-                  />
+              <button
+                type="button"
+                onClick={() => setPaymentMethod("callback")}
+                className={`w-full flex items-center justify-between p-5 rounded-2xl border-2 transition-all text-left ${
+                  paymentMethod === "callback"
+                    ? "border-primary bg-primary/5"
+                    : "border-outline-variant bg-white hover:border-primary/50"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+                    <Icon name="chat" className="text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold">Оставить заявку</p>
+                    <p className="text-xs text-on-surface-variant">
+                      Мы напишем в WhatsApp и выставим счёт вручную
+                    </p>
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="MM/YY"
-                    className="px-4 py-3 rounded-xl border border-outline-variant outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                  <input
-                    type="password"
-                    placeholder="CVV"
-                    className="px-4 py-3 rounded-xl border border-outline-variant outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                </div>
-              </div>
+                {paymentMethod === "callback" && (
+                  <Icon name="check_circle" className="text-primary" filled />
+                )}
+              </button>
             </div>
+
+            <p className="text-xs text-on-surface-variant leading-relaxed">
+              Kaspi QR, Kaspi Red и рассрочка 0-0-12 — в приложении Kaspi.kz после выставления счёта.
+            </p>
 
             <label className="flex items-start gap-3 mt-6 text-sm text-on-surface-variant">
               <input type="checkbox" className="mt-1 rounded border-outline" defaultChecked />
@@ -325,10 +430,18 @@ export default function CheckoutPage() {
               <p className="text-[10px] text-primary font-bold">Бесплатная доставка!</p>
             )}
           </div>
-          <Button onClick={nextStep} className="w-full">
+          {submitError && (
+            <p className="text-sm text-red-600 mb-3 text-center">{submitError}</p>
+          )}
+          <Button onClick={nextStep} className="w-full" disabled={submitting}>
             {step === 1 && "Подтвердить доставку"}
             {step === 2 && "Перейти к оплате"}
-            {step === 3 && "Оформить заказ"}
+            {step === 3 &&
+              (submitting
+                ? "Оформляем..."
+                : paymentMethod === "kaspi" && kaspiAvailable
+                  ? `Оплатить ${formatPrice(cartTotal)} в Kaspi`
+                  : "Отправить заявку")}
             <Icon name="arrow_forward" />
           </Button>
         </div>

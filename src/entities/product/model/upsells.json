@@ -1,0 +1,50 @@
+[
+  {
+    "id": "детский-кальциевый-комплекс-dr-poy",
+    "slug": "детский-кальциевый-комплекс-dr-poy-детский-кальциевый-комплекс-dr-poy",
+    "name": "Детский Кальциевый комплекс Dr.POY",
+    "categorySlug": "detskie-vitaminy",
+    "price": 475000,
+    "oldPrice": 950000,
+    "image": "https://static.tildacdn.pro/stor3037-3834-4761-a631-343665633434/66654829.png",
+    "shortDescription": "это жевательные витамины, предназначенные для обеспечения организма необходимым количеством кальция и витамина D. Они способствуют укреплению костной системы и поддержанию общего здоровья.",
+    "inStock": true,
+    "sourceUrl": "https://www.medivitamins.kz/detskie-vitaminy/tproduct/171030416532-detskii-kaltsievii-kompleks-drpoy"
+  },
+  {
+    "id": "подарочный-набор-dr-ceuracle-vegan-kombucha-relaxing-set",
+    "slug": "подарочный-набор-dr-ceuracle-vegan-kombucha-relaxing-set-подарочный-набор-dr-ceuracle-vegan-kombucha",
+    "name": "Подарочный набор Dr.Ceuracle Vegan Kombucha Relaxing Set",
+    "categorySlug": "uhodovaya-kosmetika",
+    "price": 1855000,
+    "oldPrice": 2650000,
+    "image": "https://static.tildacdn.pro/stor6463-3131-4837-b636-363764306635/86becdaaee3a2fbbb9cd62f6dba2767b.jpg",
+    "shortDescription": "Подарочный набор Dr.Ceuracle Vegan Kombucha Relaxing Set — это уход для глубокого увлажнения и расслабления. В набор входит полноразмерная эссенция с комбучей, мист для лица и ароматная бомбочка для ванны. Ферментированный чай комбуча богат пробиотиками и антиоксидантами, которые помогают укрепить защитный барьер кожи, восстановить баланс и придать коже здоровое сияние. Бомбочка для ванны помогает расслабиться и превращает обычный уход в настоящий SPA-ритуал.",
+    "inStock": true,
+    "sourceUrl": "https://www.medivitamins.kz/uhodovaya-kosmetika/tproduct/432901324004-podarochnii-nabor-drceuracle-vegan-kombu"
+  },
+  {
+    "id": "retinal-skin-booster-serum-meditherapy-150-мл-сыворотка-для-лица-с-ретиналем-и-н",
+    "slug": "retinal-skin-booster-serum-meditherapy-150-мл-сыворотка-для-лица-с-ретиналем-и-н-retinal-skin-booste",
+    "name": "Retinal Skin Booster Serum – Meditherapy (150 мл) Сыворотка для лица с ретиналем и ниацинамидом от бренда Meditherapy",
+    "categorySlug": "syvorotki",
+    "price": 1150000,
+    "oldPrice": 1400000,
+    "image": "https://static.tildacdn.pro/stor3636-3039-4262-a234-646566643032/64334354.webp",
+    "shortDescription": "Сыворотка для лица с ретиналем и ниацинамидом от бренда Meditherapy создана для эффективного восстановления и омоложения кожи. Средство улучшает тон лица, борется с признаками возрастных изменений и возвращает коже упругость.",
+    "inStock": true,
+    "sourceUrl": "https://www.medivitamins.kz/syvorotki/tproduct/956770357102-retinal-skin-booster-serum-meditherapy-1"
+  },
+  {
+    "id": "skin1004-madagascar-centella-poremizing-velvet-primer-sunscreen-spf50-pa-солнцез",
+    "slug": "skin1004-madagascar-centella-poremizing-velvet-primer-sunscreen-spf50-pa-солнцез-skin1004-madagascar",
+    "name": "SKIN1004 Madagascar Centella Poremizing Velvet Primer Sunscreen SPF50+ PA++++ — солнцезащитный спф праймер с матирующим эффектом и центеллой.",
+    "categorySlug": "spf",
+    "price": 800000,
+    "oldPrice": 950000,
+    "image": "https://static.tildacdn.pro/stor3265-6631-4134-b963-626139306162/3d6e28290585355d6ee80a7cfdb3d1e6.png",
+    "shortDescription": "SKIN1004 Madagascar Centella Poremizing Velvet Primer Sunscreen SPF50+ PA++++ — это инновационный корейский солнцезащитный праймер с бархатным финишем, созданный для эффективной защиты кожи от UVA и UVB лучей, контроля жирного блеска и визуального сужения пор.",
+    "inStock": true,
+    "sourceUrl": "https://www.medivitamins.kz/spf/tproduct/976118032764-skin1004-madagascar-centella-poremizing"
+  }
+]

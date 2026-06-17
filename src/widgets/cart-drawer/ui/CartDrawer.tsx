@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice, PRODUCTS } from "@/entities/product";
+import { formatPrice, UPSELL_PRODUCTS } from "@/entities/product/client";
 import { calcGiftProgress, calcShippingProgress, useCartStore } from "@/features/cart";
 import { Icon } from "@/shared/ui/Icon";
 import { Button } from "@/shared/ui/Button";
@@ -13,7 +13,9 @@ export function CartDrawer() {
   const gift = calcGiftProgress(cartTotal);
   const shipping = calcShippingProgress(cartTotal);
 
-  const upsells = PRODUCTS.filter((p) => !items.some((i) => i.product.id === p.id)).slice(0, 2);
+  const upsells = UPSELL_PRODUCTS.filter(
+    (p) => !items.some((i) => i.product.id === p.id),
+  ).slice(0, 2);
 
   if (!isOpen) return null;
 

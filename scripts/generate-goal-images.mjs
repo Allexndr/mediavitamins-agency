@@ -15,43 +15,51 @@ const OUT_DIR = join(__dirname, "../public/images/goals");
 const GOALS = [
   {
     id: "immunity",
+    icon: "shield",
     prompt:
-      "minimalist premium wellness still life, citrus and echinacea, soft cream beige background, warm natural light, korean supplement editorial, no text",
+      "glass shield symbol, vitamin C lemon zinc tablets, immune protection, cream beige background, editorial wellness, no text",
   },
   {
     id: "energy",
+    icon: "bolt",
     prompt:
-      "minimalist wellness still life, ginger root and green tea, golden light, cream background, energy vitality aesthetic, editorial photo, no text",
+      "golden lightning bolt light, ginseng B-vitamins matcha, energy vitality, cream background, editorial, no text",
   },
   {
     id: "skin",
+    icon: "auto_awesome",
     prompt:
-      "luxury korean skincare serum bottle, dewy glow, rose petals, cream background, editorial beauty photography, no text",
+      "collagen serum sparkle stars, dewy radiant glow, rose quartz, cream background, korean skincare, no text",
   },
   {
     id: "hair",
+    icon: "spa",
     prompt:
-      "silky hair wellness supplements biotin capsules, botanical leaves, cream background, premium editorial, no text",
+      "spa argan oil silky hair biotin bottle eucalyptus, hair nails strength, cream background, no text",
   },
   {
     id: "gut",
+    icon: "eco",
     prompt:
-      "probiotic capsules fresh green leaves, digestive wellness, cream background, minimalist editorial, no text",
+      "green leaves circle probiotic yogurt ginger mint, digestive gut health eco, cream background, no text",
   },
   {
     id: "kids",
+    icon: "child_care",
     prompt:
-      "children gummy vitamins soft pastel, friendly wellness, cream background, gentle light, no text",
+      "kids gummy vitamins pastel growth ruler, children development, cream background, soft light, no text",
   },
   {
     id: "women",
+    icon: "favorite",
     prompt:
-      "feminine wellness flowers supplements, soft pink cream tones, elegant editorial, no text",
+      "pink heart herbal tea evening primrose peony, women hormonal balance, cream background, no text",
   },
   {
     id: "weight",
+    icon: "fitness_center",
     prompt:
-      "green tea metabolism wellness, healthy lifestyle, cream background, clean editorial, no text",
+      "light dumbbells green tea metabolism capsules apple, weight fitness form, cream background, no text",
   },
 ];
 

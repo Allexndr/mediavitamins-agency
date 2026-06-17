@@ -5,6 +5,7 @@ export interface Product {
   slug: string;
   name: string;
   category: string;
+  categorySlug: string;
   price: number;
   oldPrice?: number;
   image: string;
@@ -15,4 +16,18 @@ export interface Product {
   inStock?: boolean;
   rating?: number;
   reviewsCount?: number;
+  sourceUrl?: string;
+}
+
+export interface ScrapedProduct {
+  id: string;
+  slug: string;
+  name: string;
+  categorySlug: string;
+  price: number;
+  oldPrice?: number;
+  image: string;
+  shortDescription: string;
+  inStock: boolean;
+  sourceUrl: string;
 }

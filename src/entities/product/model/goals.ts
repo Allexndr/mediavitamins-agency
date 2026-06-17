@@ -1,0 +1,58 @@
+export const GOALS = [
+  {
+    id: "immunity",
+    title: "Иммунитет",
+    subtitle: "Защита организма",
+    icon: "shield",
+    image: "/images/goals/goal-immunity.png",
+  },
+  {
+    id: "energy",
+    title: "Энергия",
+    subtitle: "Тонус и бодрость",
+    icon: "bolt",
+    image: "/images/goals/goal-energy.png",
+  },
+  {
+    id: "skin",
+    title: "Красота кожи",
+    subtitle: "Сияние изнутри",
+    icon: "auto_awesome",
+    image: "/images/goals/goal-skin.png",
+  },
+  {
+    id: "hair",
+    title: "Волосы и ногти",
+    subtitle: "Густота и сила",
+    icon: "spa",
+    image: "/images/goals/goal-hair.png",
+  },
+  {
+    id: "gut",
+    title: "Пищеварение",
+    subtitle: "Легкость и ЖКТ",
+    icon: "eco",
+    image: "/images/goals/goal-gut.png",
+  },
+  {
+    id: "kids",
+    title: "Для детей",
+    subtitle: "Рост и развитие",
+    icon: "child_care",
+    image: "/images/goals/goal-kids.png",
+  },
+  {
+    id: "women",
+    title: "Женское здоровье",
+    subtitle: "Гормональный баланс",
+    icon: "favorite",
+    image: "/images/goals/goal-women.png",
+  },
+  {
+    id: "weight",
+    title: "Снижение веса",
+    subtitle: "Метаболизм и форма",
+    icon: "fitness_center",
+    image: "/images/goals/goal-weight.png",
+  },
+] as const;

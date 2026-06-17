@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { formatPrice, getProductBySlug, PRODUCTS } from "@/entities/product";
+import { formatPrice, getProductBySlug, getProducts } from "@/entities/product";
 import { ProductActions } from "@/features/cart/ui/ProductActions";
 import { Icon } from "@/shared/ui/Icon";
 import { ProductCard } from "@/widgets/product-card/ui/ProductCard";
@@ -12,11 +12,12 @@ interface ProductPageProps {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) notFound();
 
-  const related = PRODUCTS.filter(
+  const allProducts = await getProducts();
+  const related = allProducts.filter(
     (p) => p.id !== product.id && (p.goal === product.goal || p.category === product.category),
   ).slice(0, 4);
 
